@@ -1,0 +1,39 @@
+{
+  "name": "fabra-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "NEXT_MANUAL_SIG_HANDLE=true next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.2",
+    "@mui/material": "^6.4.2",
+    "@mui/material-nextjs": "^6.4.2",
+    "@react-three/fiber": "^8.17.14",
+    "@types/three": "^0.173.0",
+    "next": "14.2.23",
+    "promised-sqlite3": "^2.1.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "server-only": "^0.0.1",
+    "sqlite3": "^5.1.7",
+    "three": "^0.173.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.23",
+    "eslint-plugin-import": "^2.31.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5"
+  },
+  "packageManager": "yarn@4.6.0"
+}

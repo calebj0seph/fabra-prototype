@@ -31,6 +31,9 @@ export function CameraControls() {
   // Since we're using on-demand rendering, we need to manually trigger a re-render when the orbit
   // controls change the camera
   useEffect(() => {
+    // Initially position the camera
+    camera.position.set(0, 0, 1);
+
     const orbitControls = orbitControlsRef.current;
     const onOrbitChange = () => invalidate();
 

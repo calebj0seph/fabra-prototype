@@ -6,7 +6,8 @@ import { Canvas } from '@react-three/fiber';
 
 import { CameraControls } from './camera-controls';
 import { Lighting } from './lighting';
-import { Shirt } from './models/shirt';
+import { Shirt, shirtParts } from './models/shirt';
+import { SelectionEditor } from './ui/selection-editor';
 
 /**
  * The entrypoint to the 3D design editor.
@@ -20,7 +21,7 @@ export default function Editor() {
         // Use variance shadow maps which tend to do a better job with soft shadows
         shadows="variance"
       >
-        <CameraControls />
+        <CameraControls parts={shirtParts} />
         <Lighting />
         <Suspense fallback={null}>
           <Shirt
@@ -32,6 +33,7 @@ export default function Editor() {
           />
         </Suspense>
       </Canvas>
+      <SelectionEditor parts={shirtParts} />
     </div>
   );
 }

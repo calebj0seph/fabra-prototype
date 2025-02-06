@@ -6,17 +6,42 @@ import { useDracoGltf } from './use-draco-gltf';
 import type { ModelProps } from './props';
 
 /**
+ * The different parts of the shirt model that can have different materials applied to them.
+ */
+export const shirtParts = [
+  // By using spherical coordinates for the camera position of each part, we ensure that the camera
+  // is always orbiting around the origin and doesn't end up off-center
+  { id: 'back', name: 'Back', camera: { distance: 0.75, phi: 65, theta: 180 } },
+  {
+    id: 'front',
+    name: 'Front',
+    camera: { distance: 0.75, phi: 60, theta: 0 },
+  },
+  {
+    id: 'neckRim',
+    name: 'Neck Rim',
+    camera: { distance: 0.65, phi: 25, theta: 0 },
+  },
+  {
+    id: 'leftSleeve',
+    name: 'Left Sleeve',
+    camera: { distance: 0.65, phi: 65, theta: 65 },
+  },
+  {
+    id: 'rightSleeve',
+    name: 'Right Sleeve',
+    camera: { distance: 0.65, phi: 65, theta: -65 },
+  },
+] as const;
+
+/**
  * Renders a shirt product model.
  *
  * @param props The materials to apply to different parts of the shirt.
  */
-export function Shirt(
-  props: ModelProps<
-    'back' | 'front' | 'neckRim' | 'leftSleeve' | 'rightSleeve'
-  >,
-) {
+export function Shirt(props: ModelProps<(typeof shirtParts)[number]['id']>) {
   const { nodes, materials } = useDracoGltf('/models/shirt/shirt.glb');
-  const position = [0, -1.152, 0.065] as const;
+  const position = [0, -1.2, 0.065] as const;
 
   return (
     <group dispose={null}>

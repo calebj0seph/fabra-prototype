@@ -2369,6 +2369,7 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     three: "npm:^0.173.0"
     typescript: "npm:^5"
+    valtio: "npm:^2.1.3"
   languageName: unknown
   linkType: soft
 
@@ -4254,6 +4255,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-compare@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "proxy-compare@npm:3.0.1"
+  checksum: 10c0/1e3631ef32603d4de263860ce02d84b48384dce9b62238b2148b3c58a4e4ec5b06644615dcc196a339f73b9695443317099d55a9173e02ce8492088c9330c00b
+  languageName: node
+  linkType: hard
+
 "pump@npm:^3.0.0":
   version: 3.0.2
   resolution: "pump@npm:3.0.2"
@@ -5345,6 +5353,23 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 10c0/41a5bdd214df2f6c3ecf8622745e4a366c4adced864bc3c833739791aeeeb1838119af7daed4ba36428114b5c67dcda034a79c882e97e43c03e66a4dd7389942
+  languageName: node
+  linkType: hard
+
+"valtio@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "valtio@npm:2.1.3"
+  dependencies:
+    proxy-compare: "npm:^3.0.1"
+  peerDependencies:
+    "@types/react": ">=18.0.0"
+    react: ">=18.0.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: 10c0/eacfe698f278b835eaa8f2f6418a083d5710bf060d61743aa98915f5958a36e71530b8111f3c592a2a37d274297bd0f57025658bcf67cb74334fc5c02342bd2c
   languageName: node
   linkType: hard
 

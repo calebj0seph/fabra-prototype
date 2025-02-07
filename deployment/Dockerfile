@@ -1,8 +1,8 @@
-FROM node:22-alpine
+FROM node:22-bookworm-slim
 EXPOSE 8080
 
 # Use the built-in 'node' user instead of root
-USER 1000
+USER node
 
 # Copy the app files
 RUN mkdir -p /home/node/app

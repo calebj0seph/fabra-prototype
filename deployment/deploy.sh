@@ -168,4 +168,10 @@ else
     --service-arn "$service_arn"
 fi
 
+# Display the service URL
+service_url=$(aws apprunner list-services \
+  --region "ap-southeast-2" \
+  | jq -r '.ServiceSummaryList | map(select(.ServiceName == "'"$SERVICE_NAME"'"))[0].ServiceUrl'
+)
 echo "Done!"
+echo "Once the deployment completes, you can access the app at: https://$service_url"

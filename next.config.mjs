@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Use a standalone build that we can containerise without needing to include node_modules
+  output: 'standalone',
   async headers() {
     return [
       {

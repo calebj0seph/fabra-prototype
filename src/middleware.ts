@@ -103,11 +103,11 @@ export const config = {
   matcher: [
     /*
      * Require authentication on all routes except:
-     * - /api/auth (endpoint for checking if a user is authenticated)
+     * - /api (API endpoints)
      * - /_next/static (static files)
      * - /_next/image (image optimization files)
      * - /favicon.ico, /sitemap.xml, /robots.txt (other public files)
      */
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
   ],
 };

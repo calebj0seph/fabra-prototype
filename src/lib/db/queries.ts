@@ -71,6 +71,53 @@ export async function getUser(userId: number) {
 }
 
 /**
+ * Creates a new user account with the given email and password.
+ *
+ * This function generates a random 256-bit salt, computes an scrypt-derived hash of the password
+ * and inserts the user into the database. It returns the created {@link User} object.
+ *
+ * @param email The email address for the new user
+ * @param displayName The display name for the new user
+ * @param password The plaintext password for the new user
+ * @returns The newly created {@link User}, or `null` if the account already exists
+ */
+export async function createAccount(email: string, displayName: string, password: string): Promise<User | null> {
+  // Check if the account already exists.
+  const db = await database;
+  const existing = await db.get<{ id: number }>(
+    'SELECT id FROM users WHERE email = ?',
+    email,
+  );
+  if (existing) {
+    return null;
+  }
+
+  // Generate a 64-byte salt.
+  const salt = randomBytes(64);
+  // Compute the scrypt hash of the password using the generated salt.
+  const hash = (await scrypt(password, salt, 64)) as Buffer;
+
+  const created = Date.now() / 1000;
+  const result = await db.run(
+    'INSERT INTO users (created, email, display_name, password_hash, password_salt) VALUES (?, ?, ?, ?, ?)',
+    created,
+    email,
+    displayName,
+    hash,
+    salt,
+  );
+
+  return {
+    id: result.lastID,
+    created: new Date(created * 1000),
+    email,
+    displayName,
+    passwordHash: hash,
+    passwordSalt: salt,
+  };
+}
+
+/**
  * Creates a new session for the specified user.
  *
  * This function generates a random 256-bit hex token, sets the session expiry to 30 days from the

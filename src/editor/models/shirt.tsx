@@ -1,45 +1,52 @@
 import { type Mesh } from 'three';
 
-import { ModifiedMaterial } from '../materials/modified-material';
+import { MaterialWithTextures } from '../materials/material-with-textures';
+import { useDracoGltf } from '../utils';
 
-import { useDracoGltf } from './use-draco-gltf';
-import type { ModelProps } from './props';
+import { partDefinition, type ModelProps } from './types';
 
 /**
  * The different parts of the shirt model that can have different materials applied to them.
  */
-export const shirtParts = [
-  // By using spherical coordinates for the camera position of each part, we ensure that the camera
-  // is always orbiting around the origin and doesn't end up off-center
-  { id: 'back', name: 'Back', camera: { distance: 0.75, phi: 65, theta: 180 } },
-  {
+export const shirtParts = partDefinition({
+  front: {
     id: 'front',
     name: 'Front',
-    camera: { distance: 0.75, phi: 60, theta: 0 },
+    camera: { distance: 0.75, latitude: 60, longitude: 0 },
+    defaultMaterial: 'houndstooth',
   },
-  {
+  back: {
+    id: 'back',
+    name: 'Back',
+    camera: { distance: 0.75, latitude: 65, longitude: 180 },
+    defaultMaterial: 'houndstooth',
+  },
+  neckRim: {
     id: 'neckRim',
     name: 'Neck Rim',
-    camera: { distance: 0.65, phi: 25, theta: 0 },
+    camera: { distance: 0.65, latitude: 25, longitude: 0 },
+    defaultMaterial: 'houndstooth',
   },
-  {
+  leftSleeve: {
     id: 'leftSleeve',
     name: 'Left Sleeve',
-    camera: { distance: 0.65, phi: 65, theta: 65 },
+    camera: { distance: 0.65, latitude: 65, longitude: 65 },
+    defaultMaterial: 'houndstooth',
   },
-  {
+  rightSleeve: {
     id: 'rightSleeve',
     name: 'Right Sleeve',
-    camera: { distance: 0.65, phi: 65, theta: -65 },
+    camera: { distance: 0.65, latitude: 65, longitude: -65 },
+    defaultMaterial: 'houndstooth',
   },
-] as const;
+});
 
 /**
  * Renders a shirt product model.
  *
  * @param props The materials to apply to different parts of the shirt.
  */
-export function Shirt(props: ModelProps<(typeof shirtParts)[number]['id']>) {
+export function Shirt({ partMaterials }: ModelProps<typeof shirtParts>) {
   const { nodes, materials } = useDracoGltf('/models/shirt/shirt.glb');
   const position = [0, -1.2, 0.065] as const;
 
@@ -51,7 +58,10 @@ export function Shirt(props: ModelProps<(typeof shirtParts)[number]['id']>) {
         geometry={(nodes.back as Mesh).geometry}
         position={position}
       >
-        <ModifiedMaterial base={materials.Back} material={props.back} />
+        <MaterialWithTextures
+          material={materials.Back}
+          textures={partMaterials.back}
+        />
       </mesh>
       <mesh
         castShadow
@@ -59,12 +69,15 @@ export function Shirt(props: ModelProps<(typeof shirtParts)[number]['id']>) {
         geometry={(nodes.front as Mesh).geometry}
         position={position}
       >
-        <ModifiedMaterial base={materials.Front} material={props.front} />
+        <MaterialWithTextures
+          material={materials.Front}
+          textures={partMaterials.front}
+        />
       </mesh>
       <mesh geometry={(nodes.neck_rim as Mesh).geometry} position={position}>
-        <ModifiedMaterial
-          base={materials.Accessories}
-          material={props.neckRim}
+        <MaterialWithTextures
+          material={materials.Accessories}
+          textures={partMaterials.neckRim}
         />
       </mesh>
       <mesh
@@ -73,9 +86,9 @@ export function Shirt(props: ModelProps<(typeof shirtParts)[number]['id']>) {
         geometry={(nodes.left_sleeve as Mesh).geometry}
         position={position}
       >
-        <ModifiedMaterial
-          base={materials.Accessories}
-          material={props.leftSleeve}
+        <MaterialWithTextures
+          material={materials.Accessories}
+          textures={partMaterials.leftSleeve}
         />
       </mesh>
       <mesh
@@ -84,9 +97,9 @@ export function Shirt(props: ModelProps<(typeof shirtParts)[number]['id']>) {
         geometry={(nodes.right_sleeve as Mesh).geometry}
         position={position}
       >
-        <ModifiedMaterial
-          base={materials.Accessories}
-          material={props.rightSleeve}
+        <MaterialWithTextures
+          material={materials.Accessories}
+          textures={partMaterials.rightSleeve}
         />
       </mesh>
       <mesh

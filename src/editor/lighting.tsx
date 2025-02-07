@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material';
+import useTheme from '@mui/material/styles/useTheme';
 
 import { Vector3 } from 'three';
 
@@ -12,11 +12,13 @@ export function Lighting() {
     .multiplyScalar(20);
 
   const isDarkTheme = useTheme().palette.mode === 'dark';
+  
+  // Use less ambient light in dark mode
+  const lightMultiplier = isDarkTheme ? 1 : 2;
 
   return (
     <>
-      {/* Use less ambient light in dark mode */}
-      <ambientLight intensity={isDarkTheme ? 0.6 : 1.5} />
+      <ambientLight intensity={0.5 * lightMultiplier} />
       <directionalLight
         castShadow
         intensity={3}
@@ -32,17 +34,17 @@ export function Lighting() {
         shadow-camera-near={1}
         shadow-camera-far={50}
       />
-      {/* Add some cool fill lighting from above */}
+      {/* Add some warm fill lighting from above */}
       <spotLight
-        color="#bdd1ff"
-        intensity={3.5}
+        color="#ffc993"
+        intensity={4 * lightMultiplier}
         angle={Math.PI / 6}
         position={[0, 2, -0.5]}
       />
-      {/* Add some warm back lighting from behind */}
+      {/* Add some cool back lighting from behind */}
       <spotLight
-        color="#ffc993"
-        intensity={2}
+        color="#bdd1ff"
+        intensity={3 * lightMultiplier}
         angle={Math.PI / 6}
         position={[-2, 0, -1]}
       />

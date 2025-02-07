@@ -223,3 +223,44 @@ export async function updateFileTitle(
     throw new Error('Update failed: File not found or not owned by user.');
   }
 }
+
+/**
+ * Retrieves the data for a file by its ID owned by the specified user.
+ *
+ * @param userID The ID of the user who owns the file
+ * @param fileID The ID of the file to get data for
+ * @returns The file data as a Buffer, or `null` if data for the file is not found or the file is
+ * not owned by the user
+ */
+export async function getFileDataByID(
+  userID: number,
+  fileID: number,
+): Promise<Buffer | null> {
+  const db = await database;
+  const row = await db.get<{ data: Buffer }>(
+    `
+    SELECT file_data.data
+      FROM file_data
+      INNER JOIN files ON file_data.file_id = files.id
+      WHERE files.id = ? AND files.user_id = ?
+    `,
+    fileID,
+    userID,
+  );
+  return row ? row.data : null;
+}
+
+/**
+ * Sets the data for a file by its ID, creating a new record if one does not already exist.
+ *
+ * @param fileID The ID of the file to set data for
+ * @param data The data to set
+ */
+export async function setFileData(fileID: number, data: Buffer): Promise<void> {
+  const db = await database;
+  await db.run(
+    'INSERT OR REPLACE INTO file_data (file_id, data) VALUES (?, ?)',
+    fileID,
+    data,
+  );
+}

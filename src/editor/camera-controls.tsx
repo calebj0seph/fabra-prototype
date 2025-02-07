@@ -14,6 +14,7 @@ import { subscribeKey } from 'valtio/utils';
 
 import { selectionState } from './ui/state';
 import { lerpSpherical, materialEase, sphericalToQuaternion } from './utils';
+import type { ModelPartsDefinition } from './models/types';
 
 // Make OrbitControls available as a JSX element, since it's not a built-in Three.js class
 extend({ OrbitControls });
@@ -34,10 +35,7 @@ export interface CameraControlsProps {
    * The parts of the model that can be selected. Each part defines the spherical coordinates that
    * the camera should move to when the part is selected.
    */
-  parts: ReadonlyArray<{
-    camera: { distance: number; phi: number; theta: number };
-    id: string;
-  }>;
+  parts: ModelPartsDefinition<string>;
 }
 
 /**
@@ -85,7 +83,7 @@ export function CameraControls({ parts }: CameraControlsProps) {
           return;
         }
 
-        const part = parts.find((p) => p.id === selectedPart);
+        const part = parts[selectedPart];
         if (!part) {
           return;
         }
@@ -107,8 +105,8 @@ export function CameraControls({ parts }: CameraControlsProps) {
         cameraEndPosition.current = new Spherical(
           part.camera.distance,
           // Degrees to radians
-          (part.camera.phi * Math.PI) / 180,
-          (part.camera.theta * Math.PI) / 180,
+          (part.camera.latitude * Math.PI) / 180,
+          (part.camera.longitude * Math.PI) / 180,
         );
         cameraEndQuaternion.current = sphericalToQuaternion(
           cameraEndPosition.current,

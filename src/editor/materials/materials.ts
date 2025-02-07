@@ -1,7 +1,26 @@
 /**
+ * A list of materials that can be applied to the model in the editor. Each material has a name
+ * displayed to the user and an ID used to identify it.
+ */
+export const editorMaterials = [
+  {
+    name: 'Houndstooth',
+    id: 'houndstooth',
+  },
+  {
+    name: 'Jeans',
+    id: 'jeans',
+  },
+  {
+    name: 'Red plaid',
+    id: 'redplaid',
+  },
+] as const;
+
+/**
  * Represents a valid material that can be applied in the editor.
  */
-export type EditorMaterial = 'houndstooth' | 'jeans' | 'redplaid';
+export type EditorMaterial = (typeof editorMaterials)[number]['id'];
 
 /**
  * The materials that have a roughness texture.

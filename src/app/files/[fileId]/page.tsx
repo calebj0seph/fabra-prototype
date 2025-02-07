@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import Box from '@mui/material/Box';
 
 import { getLoggedInUser } from '@/lib/auth/utils';
-import { getFileByID } from '@/lib/db/queries';
+import { getFileByID, getFileDataByID } from '@/lib/db/queries';
 
 import Editor from '@/editor/editor';
 
@@ -31,6 +31,16 @@ export default async function FilePage({ params }: FilePageProps) {
     redirect('/files');
   }
 
+  // For now we'll just hard-code the shirt model as being edited, but ideally this would be loaded
+  // from the database
+  const model = 'shirt' as const;
+
+  // Get the saved file data which defines the materials for different parts of the model, if any
+  const fileData = await getFileDataByID(currentUser.id, fileId);
+  const savedPartMaterials = fileData
+    ? JSON.parse(fileData.toString('utf8'))
+    : null;
+
   return (
     <Box
       sx={{
@@ -39,7 +49,11 @@ export default async function FilePage({ params }: FilePageProps) {
         height: '100vh',
       }}
     >
-      <Editor />
+      <Editor
+        fileId={fileId}
+        model={model}
+        savedPartMaterials={savedPartMaterials}
+      />
       <FileControls file={file} />
     </Box>
   );

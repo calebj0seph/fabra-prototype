@@ -41,6 +41,16 @@ async function createTables(database: AsyncDatabase) {
     CREATE INDEX IF NOT EXISTS idx_files_user_id ON files(user_id);
   `);
 
+  // Create the file data table, used to store the actual contents of files
+  await database.run(`
+    CREATE TABLE IF NOT EXISTS file_data (
+      file_id   INTEGER PRIMARY KEY,
+      -- We only store JSON for now, but using BLOB lets us store binary data in the future
+      data      BLOB NOT NULL,
+      FOREIGN KEY (file_id) REFERENCES files(id)
+    );
+  `);
+
   // Create the sessions table
   // We'd probably want to use signed JWTs to avoid needing to lookup sessions from the database,
   // but for a prototype this is fine

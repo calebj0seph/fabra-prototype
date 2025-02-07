@@ -51,7 +51,7 @@ export async function middleware(request: NextRequest) {
   // Edge runtime and can't open the SQLite database directly.
   try {
     const authResponse = await fetch(
-      `${request.nextUrl.origin}/api/auth?${new URLSearchParams([['token', authToken.value]])}`,
+      `http://localhost:${process.env.PORT}/api/auth?${new URLSearchParams([['token', authToken.value]])}`,
     );
     if (!authResponse.ok) {
       throw new Error('Unable to validate authentication token');

@@ -1,13 +1,16 @@
 'use client';
 
+import { redirect } from 'next/navigation';
+
+import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect } from 'react';
+
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
-
-import { useFormState, useFormStatus } from 'react-dom';
 
 import { loginAction, type LoginActionState } from '@/lib/auth/actions';
 
@@ -57,6 +60,12 @@ export function LoginForm() {
   const [loginState, loginFormAction] = useFormState(loginAction, {
     success: null,
   });
+
+  useEffect(() => {
+    if (loginState.success) {
+      redirect('/files');
+    }
+  }, [loginState]);
 
   return (
     <Container maxWidth="sm" sx={{ marginTop: 4 }}>

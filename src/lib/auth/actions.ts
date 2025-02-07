@@ -2,7 +2,6 @@
 
 import 'server-only';
 
-import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
 import { getAuthenticatedUser, createSession } from '../db/queries';
@@ -16,7 +15,7 @@ export interface LoginActionState {
   /**
    * `false` if the login failed, `null` if the login form has not been submitted yet.
    */
-  success: false | null;
+  success: boolean | null;
 }
 
 /**
@@ -49,5 +48,5 @@ export async function loginAction(
     expires: session.expiry,
   });
 
-  redirect('/files');
+  return { success: true };
 }
